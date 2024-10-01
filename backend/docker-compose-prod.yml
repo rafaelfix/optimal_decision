@@ -1,0 +1,27 @@
+version: '3.3'
+
+# Docker Compose configuration used for production deployment
+
+name: backend_prod
+
+services:
+  web:
+    image: gitlab.liu.se:5000/emiho191/tddd96-pum09-2024/backend_web:main
+    command: gunicorn django_backend.wsgi:application --bind 0.0.0.0:8088 --log-level debug --capture-output --timeout 60
+    ports:
+      - 8088:8088
+    restart: always
+    env_file:
+      - ./.env.web
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.db
+
+volumes:
+  postgres_data:

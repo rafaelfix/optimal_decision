@@ -1,0 +1,212 @@
+import 'package:confetti/confetti.dart';
+import 'package:flutter/material.dart';
+import 'package:olle_app/functions/olle_badge.dart';
+
+class ProgressScreen extends StatefulWidget {
+  final int correctAnswersCount;
+  final int wrongAnswersCount;
+  final int highestHotstreak;
+  final int secondsPlayed;
+  final String operand;
+  final int previousLevel;
+  final int currentLevel;
+
+  const ProgressScreen(
+      {Key? key,
+      required this.correctAnswersCount,
+      required this.wrongAnswersCount,
+      required this.highestHotstreak,
+      required this.secondsPlayed,
+      required this.operand,
+      required this.previousLevel,
+      required this.currentLevel})
+      : super(key: key);
+
+  @override
+  State<ProgressScreen> createState() => _ProgressScreenState();
+}
+
+class _ProgressScreenState extends State<ProgressScreen> {
+  final double badgeWidth = 175;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Log the values passed to the ProgressScreen
+    print('ProgressScreen initialized');
+    print('Correct Answers: ${widget.correctAnswersCount}');
+    print('Wrong Answers: ${widget.wrongAnswersCount}');
+    print('Highest Hotstreak: ${widget.highestHotstreak}');
+    print('Seconds Played: ${widget.secondsPlayed}');
+    print('Operand: ${widget.operand}');
+    print('Previous Level: ${widget.previousLevel}');
+    print('Current Level: ${widget.currentLevel}');
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    int questionCount = widget.correctAnswersCount + widget.wrongAnswersCount;
+    String badgePath = OlleBadge(progressScreenWidget: widget).getBadgePath();
+
+    return Scaffold(
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            ConfettiWidget(
+              confettiController: ConfettiController(
+                duration: const Duration(milliseconds: 500),
+              )..play(),
+              blastDirectionality: BlastDirectionality.explosive,
+              numberOfParticles: 15,
+            ),
+            Image.asset(
+              badgePath,
+              width: badgeWidth,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Divider(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                thickness: 1,
+                indent: 40,
+                endIndent: 40,
+              ),
+            ),
+            IconTextBox(
+              text: questionCount == 0
+                  ? '100%'
+                  : (widget.correctAnswersCount / questionCount * 100)
+                          .toInt()
+                          .toString() +
+                      '%',
+              iconData: Icons.check_rounded,
+              color: const Color(0xff62CF5A),
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              thickness: 1,
+              indent: 90,
+              endIndent: 90,
+            ),
+            IconTextBox(
+              text: formattedTime(widget.secondsPlayed * 1000),
+              iconData: Icons.schedule_rounded,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              thickness: 1,
+              indent: 90,
+              endIndent: 90,
+            ),
+            IconTextBox(
+              text: widget.highestHotstreak.toString(),
+              iconData: Icons.local_fire_department_outlined,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              thickness: 1,
+              indent: 90,
+              endIndent: 90,
+            ),
+            IconTextBox(
+              text: widget.currentLevel.toString(),
+              iconData: Icons.bar_chart_rounded,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              thickness: 1,
+              indent: 90,
+              endIndent: 90,
+            ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.arrow_circle_right_outlined,
+                color: Theme.of(context).colorScheme.primary,
+                size: 140.0,
+              ),
+              onPressed: () =>
+                  {Navigator.popUntil(context, ModalRoute.withName('/home'))},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class IconTextBox extends StatelessWidget {
+  const IconTextBox({
+    super.key,
+    required this.text,
+    required this.iconData,
+    required this.color,
+  });
+
+  final String text;
+  final IconData iconData;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      width: 150,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            iconData,
+            color: color,
+            size: 50.0,
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                  color: color, fontSize: 32, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Input [time] in milliseconds.
+/// Returns a string representation in (hh: )mm : ss.
+String formattedTime(int time) {
+  time = (time / 1000).round();
+  String formatTime;
+  int sec, min, hour;
+  if (time < 3600) {
+    String minute, second;
+    sec = time % 60;
+    min = (time / 60).floor();
+
+    if (min.toString().length <= 1) {
+      minute = "0$min";
+    } else {
+      minute = "$min";
+    }
+    if (sec.toString().length <= 1) {
+      second = "0$sec";
+    } else {
+      second = "$sec";
+    }
+    formatTime = "$minute:$second";
+  } else {
+    hour = (time / 3600).round();
+    formatTime = "$hour h";
+  }
+  return formatTime;
+}

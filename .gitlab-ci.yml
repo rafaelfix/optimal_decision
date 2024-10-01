@@ -1,0 +1,230 @@
+# See https://docs.gitlab.com/ee/ci/yaml/#extends
+.frontend:
+  image: ghcr.io/cirruslabs/flutter:3.19.1
+  before_script:
+    - cd frontend
+    # Note: Using --enforce-lockfile to verify that the dependencies in the CI
+    # environment are consistent with the local environment (pubspec.lock).
+    # See also:
+    # - https://dart.dev/tools/pub/glossary#lockfile
+    # - https://dart.dev/tools/pub/cmd/pub-get#enforce-lockfile
+    - flutter pub get --enforce-lockfile
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+.flutter-cpp-plugin:
+  image: ghcr.io/cirruslabs/flutter:3.19.1
+  before_script:
+    - cd flutter-cpp-plugin
+    # Note: Not using --enforce-lockfile here since we don't version control
+    # the lockfile (because flutter-cpp-plugin is not an application package).
+    - flutter pub get
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+# Combination of .frontend and .flutter-cpp-plugin (extends can't merge arrays)
+.frontend_and_cpp:
+  image: ghcr.io/cirruslabs/flutter:3.19.1
+  before_script:
+    - cd flutter-cpp-plugin
+    - flutter pub get
+    - cd ../frontend
+    - flutter pub get --enforce-lockfile
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+flutter_build_apk:
+  stage: build
+  needs: []
+  # Note: We use .frontend_and_cpp here since the APK is built from both modules.
+  extends:
+    - .frontend_and_cpp
+  script:
+    - flutter build apk
+  # See https://docs.gitlab.com/ee/ci/yaml/#artifacts
+  artifacts:
+    when: on_success
+    expire_in: "14 days"
+    paths:
+      - frontend/build/app/outputs/apk/release/app-release.apk
+    expose_as: "Android APK"
+
+frontend_dart_format:
+  stage: test
+  needs: []
+  extends:
+    - .frontend
+  script:
+    # Will exit non-zero if the formatter changes something.
+    - dart format --set-exit-if-changed .
+
+frontend_dart_analyze:
+  stage: test
+  needs: []
+  extends:
+    - .frontend
+  script:
+    # Will exit non-zero for all analyzer infos/warnings/errors.
+    - dart analyze --fatal-infos --fatal-warnings
+
+frontend_flutter_test:
+  stage: test
+  needs: []
+  extends:
+    - .frontend
+  script:
+    # Will exit non-zero if any test fails.
+    - flutter test --reporter expanded --coverage
+    # Prints a summary from which we can read the coverage %
+    - lcov --summary coverage/lcov.info
+    # Generate HTML report (which can be viewed from the MR UI)
+    - genhtml coverage/lcov.info --output-directory coverage
+  # Reads from the LCOV summary, shows the % in the MR UI
+  coverage: '/lines\.*: \d+\.\d+\%/'
+  # Add coverage report as an artifact, the HTML can be viewed in GitLab Pages:
+  # https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html#browse-the-contents-of-the-artifacts-archive
+  artifacts:
+    when: on_success
+    expire_in: "14 days"
+    paths:
+      - frontend/coverage/
+    # Expose the HTML report directory in the MR UI.
+    # We can't (yet) link directly to the index.html file, see:
+    # https://gitlab.com/gitlab-org/gitlab/-/issues/220103
+    expose_as: "Test coverage report - frontend"
+
+
+flutter-cpp-plugin_dart_format:
+  stage: test
+  needs: []
+  extends:
+    - .flutter-cpp-plugin
+  script:
+    # Will exit non-zero if the formatter changes something.
+    - dart format --set-exit-if-changed .
+
+flutter-cpp-plugin_dart_analyze:
+  stage: test
+  needs: []
+  extends:
+    - .flutter-cpp-plugin
+  script:
+    # Will exit non-zero for all analyzer infos/warnings/errors.
+    - dart analyze --fatal-infos --fatal-warnings
+
+flutter-cpp-plugin_flutter_test:
+  stage: test
+  needs: []
+  extends:
+    - .flutter-cpp-plugin
+  script:
+    # Will exit non-zero if any test fails.
+    - flutter test --reporter expanded --coverage
+    # Prints a summary from which we can read the coverage %
+    - lcov --summary coverage/lcov.info
+    # Generate HTML report (which can be viewed from the MR UI)
+    - genhtml coverage/lcov.info --output-directory coverage
+  # Reads from the LCOV summary, shows the % in the MR UI
+  coverage: '/lines\.*: \d+\.\d+\%/'
+  # Add coverage report as an artifact, the HTML can be viewed in GitLab Pages:
+  # https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html#browse-the-contents-of-the-artifacts-archive
+  artifacts:
+    when: on_success
+    expire_in: "14 days"
+    paths:
+      - flutter-cpp-plugin/coverage/
+    # Expose the HTML report directory in the MR UI.
+    # We can't (yet) link directly to the index.html file, see:
+    # https://gitlab.com/gitlab-org/gitlab/-/issues/220103
+    expose_as: "Test coverage report - flutter-cpp-plugin"
+
+# See https://docs.gitlab.com/ee/ci/yaml/#extends
+.backend:
+  variables:
+    BACKEND_WEB_TAG: $CI_REGISTRY_IMAGE/backend_web:$CI_COMMIT_REF_SLUG
+  before_script:
+    - cd backend
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+# Inspired by examples at https://docs.gitlab.com/ee/user/packages/container_registry/build_and_push_images.html#container-registry-examples-with-gitlab-cicd
+backend_web_docker_build:
+  stage: build
+  needs: []
+  extends:
+    - .backend
+  image: docker:25.0.3
+  variables:
+    # Variables used to configure Docker in Docker (DinD) without TLS (see services below for more details).
+    # The variables are used both by the pipeline job itself and the associated DinD service.
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:25.0.3-dind
+      alias: docker
+      # It seems like LiU's GitLab instance is not properly configured for running Docker in Docker with TLS.
+      # The main problem is that there is no volume configured for the /certs/client/ directory.
+      # In order to run without TLS, we set DOCKER_TLS_CERTDIR="" and pass "--tls=false" to dockerd
+      # (many users report that both the variable and the flag are needed).
+      # See also:
+      # - https://about.gitlab.com/blog/2019/07/31/docker-in-docker-with-docker-19-dot-03/
+      # - https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#docker-in-docker-with-tls-enabled-in-the-docker-executor
+      # - https://github.com/docker-library/docs/tree/master/docker#tls
+      # - https://gitlab.com/gitlab-org/gitlab-runner/-/issues/27300
+      # - https://github.com/docker/for-linux/issues/1313
+      command: [ "dockerd", "--host=tcp://0.0.0.0:2375", "--tls=false" ]
+  script:
+    - docker build --pull -t $BACKEND_WEB_TAG .
+    - echo $CI_REGISTRY_PASSWORD | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker push $BACKEND_WEB_TAG
+
+backend_django_test:
+  stage: test
+  needs:
+    - backend_web_docker_build
+  extends:
+    - .backend
+  image: $BACKEND_WEB_TAG
+  # We don't want to deal with any more Docker in Docker than necessary,
+  # so in order to run our complete backend system, we use GitLab CI Services,
+  # which implements most of Docker Compose, but with a different config format.
+  # Remember to keep this in sync with the Docker Compose YAML file.
+  services:
+    - name: postgres:13.0-alpine
+      alias: db
+      variables:
+        POSTGRES_USER: olle_dev_user
+        POSTGRES_PASSWORD: ci_password
+        POSTGRES_DB: olle_dev_db
+  variables:
+    DJANGO_ALLOWED_HOSTS: "*"
+    SECRET_KEY: ci_secret_key
+    SQL_HOST: db
+    SQL_PORT: "5432"
+    SQL_USER: olle_dev_user
+    SQL_PASSWORD: ci_password
+    SQL_DATABASE: olle_dev_db
+  script:
+    - python3 manage.py test
+
+backend_ruff_format:
+  stage: test
+  needs:
+    - backend_web_docker_build
+  extends:
+    - .backend
+  image: $BACKEND_WEB_TAG
+  script:
+    # Will exit non-zero if the code isn't formatted according to Ruff.
+    - ruff format --check .
+
+backend_ruff_check:
+  stage: test
+  needs:
+    - backend_web_docker_build
+  extends:
+    - .backend
+  image: $BACKEND_WEB_TAG
+  script:
+    # Will exit non-zero if the code doesn't follow the Ruff linter rules.
+    - ruff check .

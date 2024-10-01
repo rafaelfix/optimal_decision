@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/selectName" >
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/txtSelectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="Select name"/>
+
+            <Spinner
+                android:id="@+id/spinnerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/txtSelectName"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <Button
+                android:id="@+id/buttonDelName"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_toRightOf="@+id/spinnerName"
+                android:textSize="28sp"
+                android:textAllCaps="false"
+                android:text="Del" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/txtAddName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="New name"/>
+
+            <EditText
+                android:id="@+id/newName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/txtAddName"
+                android:layout_below="@+id/spinnerName"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonAddName"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_toRightOf="@+id/newName"
+                android:textSize="28sp"
+                android:textAllCaps="false"
+                android:text="Add" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:layout_below="@+id/selectName"
+        android:id="@+id/relativeButtons" >
+
+
+
+        <TableRow>
+
+
+            <Button
+                android:id="@+id/buttonUseAdd"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:textSize="28sp"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/buttonUseSub"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_alignTop="@+id/buttonUseAdd"
+                android:layout_toRightOf="@+id/buttonUseAdd"
+                android:textSize="28sp"
+                android:text="-" />
+
+            <Button
+                android:id="@+id/buttonUseMul"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_alignTop="@+id/buttonUseSub"
+                android:layout_toRightOf="@+id/buttonUseSub"
+                android:textSize="28sp"
+                android:text="*" />
+
+            <Button
+                android:id="@+id/buttonUseDiv"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_alignTop="@+id/buttonUseMul"
+                android:layout_toRightOf="@+id/buttonUseMul"
+                android:textSize="28sp"
+                android:text="/" />
+        </TableRow>
+
+        <TableRow>
+
+
+            <Button
+                android:id="@+id/buttonUseGraphical"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:textSize="28sp"
+                android:text="Gr" />
+
+
+            <Button
+                android:id="@+id/buttonUseTimer"
+                style="?android:attr/buttonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_toRightOf="@+id/buttonUseGraphical"
+                android:textSize="28sp"
+                android:text="Ti" />
+
+
+        </TableRow>
+
+
+
+    </TableLayout>
+</RelativeLayout>

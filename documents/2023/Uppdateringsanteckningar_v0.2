@@ -1,0 +1,62 @@
+Uppdateringsanteckningar, kandidatarbete VT 2023,  Optimal Education 0.2
+
+PUM09:
+Joakim Andersson
+Michelle Galin
+Simon Giselsson
+Ludvig Jealmo
+Parisa Khedri
+Sebastian Olsson
+Amanda Sandberg
+Benjamin Sundvall
+Oscar Wahllöf
+Ture Wramner
+
+Nya filer Frontend:
+screens:
+•	addition_vis_page.dart 		– Sida för visualisering av addition.
+•	subtraction_vis_page.dart 	– Sida för visualisering av subtraktion.
+•	multi_vis_page.dart 		– Sida för visualisering av multiplikation.
+•	division_vis_page.dart 		– Sida för visualisering av division.
+•	progress_screen.dart 		– Sida som visar rätt/fel, framstegsgraf, tid och hot streak.
+•	avatar_page 			– Sida, implementerad men inte färdig. Väg till sidan hittas genom progress_page, tryck på emojin. 
+
+models:
+•	addition_strategy.dart 		– Model för val av visualiseringsstrategi (addition).
+•	animated_child_widget.dart 	– Model för animerat barn till visualiseringen av division.
+
+widgets:
+•	animated_child_positioned.dart 	– Widget för position av animerat barn till visualisering av division.
+•	elevated_back_button.dart 	– Widget knapp för att gå tillbaka i animation.
+•	flip_numbers_button.dart	– Widget knapp för att byta plats på siffror.
+•	glowing_icon _button.dart	– Widget för att få en pulserande animation för knappar.
+•	number_ball.dart		– Widget för kulor med siffror.
+•	point_should_click_icon.dart	– Widget för att skapa "lysande" pekare.
+•	summation_frame.dart		– Widget för att skapa rad av kulor.
+•	confetti.dart 			– Widget för att visualisera konfetti.
+
+Uppdaterade filer Frontend:
+functions:
+•	database_connection.dart	– Omstrukturerat koden, bör fungera som tidigare.
+•	practice_session.dart		– Omstrukturerat koden, bör fungera som tidigare.
+•	profiles.dart 			– Omstrukturerat koden, bör fungera som tidigare.
+•	task.dart 			– Omstrukturerat koden, bör fungera som tidigare.
+•	task_chart.dart			– Omstrukturerat koden, bör fungera som tidigare.
+
+screens:
+•	main_page.dart			– Tagit bort text och lagt in ikoner.
+•	new_profile.dart		– Tagit bort text och lagt in ikoner.
+•	practice.dart			– Tagit bort text och lagt in ikoner.
+•	practice_mode.dart		– Tagit bort text och lagt in ikoner.
+•	profile.dart			– Tagit bort text och lagt in ikoner.
+•	settings_page.dart		– Omstrukturerat koden, bör fungera som tidigare.
+•	statistics_page.dart		– Tagit bort text och lagt in ikoner.
+•	test_page.dart			– Omstrukturerat koden, bör fungera som tidigare.
+•	tools_page.dart			– Omstrukturerat koden, bör fungera som tidigare.
+•	visualisation_page.dart		– Tagit bort text och lagt in ikoner.
+
+widgets:
+•	navigate_button.dart		– Fixat linter errors.
+•	numpad.dart			– Lagt till en hjälp-knapp för att visualisera hur uppgiften ska lösas under träning. 
+
+För Backend, se readme.md i mappen /backend.

@@ -1,0 +1,77 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter run (debug mode, production server)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Flutter run (profile mode, production server)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Flutter run (release mode, production server)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Flutter run (debug mode, local server via ADB)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=http://localhost:8088"
+            ],
+            "preLaunchTask": "olle: adb reverse",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Flutter run (profile mode, local server via ADB)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=http://localhost:8088"
+            ],
+            "preLaunchTask": "olle: adb reverse",
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "name": "Flutter run (release mode, local server via ADB)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "${workspaceFolder}/lib/main.dart",
+            "toolArgs": [
+                "--dart-define", "OLLE_SERVER=http://localhost:8088"
+            ],
+            "preLaunchTask": "olle: adb reverse",
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
