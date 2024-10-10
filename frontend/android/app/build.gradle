@@ -1,3 +1,12 @@
+// Replace 'apply plugin' with 'plugins' block
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    //id 'com.google.gms.google-services' // If you're using Firebase/Google services
+    id 'org.jetbrains.kotlin.android' // Make sure Kotlin plugin is applied
+}
+
+//file:noinspection IncorrectPluginDslStructure
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,8 +30,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
