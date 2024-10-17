@@ -16,9 +16,10 @@ class PointShouldClickIcon extends StatelessWidget {
       glowColor: Colors.black,
       //showTwoGlows: false,
       child: Image.asset(
-        'assets/icons/hand_pointing_click.png',
-        color: Colors.amber,
-        colorBlendMode: BlendMode.modulate,
+        //'assets/icons/hand_pointing_click.png',
+        'assets/icons/transparent.png',
+        //color: Colors.yellow,
+        //colorBlendMode: BlendMode.modulate,
       ),
     );
   }

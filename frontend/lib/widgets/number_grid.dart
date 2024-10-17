@@ -44,7 +44,7 @@ class _NumberBallState extends State<_NumberBall> {
                     color: widget.ballColor,
                     border: Border.all(color: Colors.black),
                     // TODO: Fix hard coded radius
-                    //borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(100),
                   ),
             child: Center(
               child: Text(

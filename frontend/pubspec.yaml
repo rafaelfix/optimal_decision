@@ -35,8 +35,8 @@ dependencies:
     sdk: flutter
   provider: ^6.0.2
   http: ^1.2.2
-  device_info_plus: ^10.1.2
-  confetti: ^0.7.0
+  device_info_plus: ^11.1.0
+  confetti: ^0.8.0
   fluttertoast: ^8.0.9
   avatar_glow: ^3.0.1
   uuid: ^4.4.0
@@ -70,7 +70,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
   flutter_launcher_icons:
     git:
@@ -78,7 +78,7 @@ dev_dependencies:
       ref: fixMinSdkParseFlutter2.8
 
   flutter_app_name: ^0.1.0
-  lints: ^4.0.0
+  lints: 5.0.0
 
 flutter_app_name:
   name: "OLLE"
@@ -102,6 +102,7 @@ flutter:
     - assets/icons/grass.png
     - assets/icons/olle_icon.png
     - assets/icons/hand_pointing_click.png
+    - assets/icons/transparent.png
     - assets/icons/Tree1.png
     - assets/icons/Tree.png
     - assets/icons/Tree2.png
