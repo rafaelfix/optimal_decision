@@ -2,7 +2,7 @@ function [d] = retrieveUsers()
 
 % headerField = matlab.net.http.field.ContentTypeField('application/x-www-form-urlencoded');
 % url = 'http://79.136.70.172:7403/retrieveOp.php';
-url = 'http://optimalmeasurements.it.liu.se:8080/retrieveUserNames.php';
+url = 'http://om2.it.liu.se:8080/retrieveUserNames.php';
 
 un = 'jorbl45';
 pw = 'Q8rkS97.jEj';

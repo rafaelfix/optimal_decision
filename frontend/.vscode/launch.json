@@ -11,7 +11,7 @@
             "flutterMode": "debug",
             "program": "${workspaceFolder}/lib/main.dart",
             "toolArgs": [
-                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+                "--dart-define", "OLLE_SERVER=https://om2.it.liu.se/http/"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -22,7 +22,7 @@
             "flutterMode": "profile",
             "program": "${workspaceFolder}/lib/main.dart",
             "toolArgs": [
-                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+                "--dart-define", "OLLE_SERVER=https://om2.it.liu.se/http/"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },
@@ -33,7 +33,7 @@
             "flutterMode": "release",
             "program": "${workspaceFolder}/lib/main.dart",
             "toolArgs": [
-                "--dart-define", "OLLE_SERVER=https://optimalmeasurements.it.liu.se/http/"
+                "--dart-define", "OLLE_SERVER=https://om2.it.liu.se/http/"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },

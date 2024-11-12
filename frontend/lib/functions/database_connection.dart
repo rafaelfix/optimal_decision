@@ -21,7 +21,7 @@ import 'package:olle_app/functions/profiles.dart';
 // - https://developer.android.com/tools/adb#forwardports
 // - https://android.googlesource.com/platform/system/core/+/252586941934d23073a8d167ec240b221062505f
 const String _url = String.fromEnvironment('OLLE_SERVER',
-    defaultValue: 'https://optimalmeasurements.it.liu.se/http/');
+    defaultValue: 'https://om2.it.liu.se/http/');
 
 /// Converts the type of device to an int
 /// where 0 is for Android and 1 for iOS

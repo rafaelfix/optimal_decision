@@ -370,9 +370,9 @@ def main():
     port = 8080
     print('Listening on localhost:%s' % port)
     server = HTTPServer(('', port), RequestHandler)
-    #server.socket = ssl.wrap_socket (server.socket, certfile='/home/jorbl45/certs/optimalmeasurements.it.liu.se.key', server_side=True)
+    #server.socket = ssl.wrap_socket (server.socket, certfile='/home/jorbl45/certs/om2.it.liu.se.key', server_side=True)
     server.serve_forever()
-    server.socket = ssl.wrap_socket(httpd.socket, certfile='/home/jorbl45/certs/cert-optimalmeasurements.it.liu.se.pem',keyfile='/home/jorbl45/certs/optimalmeasurements.it.liu.se.key', server_side=True)
+    server.socket = ssl.wrap_socket(httpd.socket, certfile='/home/jorbl45/certs/cert-om2.it.liu.se.pem',keyfile='/home/jorbl45/certs/om2.it.liu.se.key', server_side=True)
 
 if __name__ == "__main__":
     parser = OptionParser()

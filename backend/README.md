@@ -276,13 +276,13 @@ Visa rapporten (ska köras i webbserver-container):
 
 ## Produktionsserver
 
-Produktionsservern som går att nå via `optimalmeasurements.it.liu.se` administreras av LiU-IT,
+Produktionsservern som går att nå via `optimalmeasurements.it.liu.se` administreras av LiU-IT, 
 men begränsad åtkomst ges ut på begäran. Denna begränsade åtkomst innefattar SSH-åtkomst (dock enbart via LiUs nätverk)
 samt medlemskap i grupperna `docker` och `server-admins`. Som medlem i dessa grupper kan man använda Docker
 för att driftsätta och hantera backend-systemet på produktionsservern. I mappen `/home/shared/` (som ägs av `server-admins`)
 ligger de filer som hör till driftsättningen av backend-systemet.
 
-Utåt sett kan backend-systemet på produktionsservern nås via HTTPS på addressen `https://optimalmeasurements.it.liu.se/http/`
+Utåt sett kan backend-systemet på produktionsservern nås via HTTPS på addressen `https://optimalmeasurements.it.liu.se/http/` 
 (även utanför LiUs nätverk) och trafiken vidarebefordras sedan internt till roten av backend-systemets webbserver på port 8088,
 via en Ngnix-konfiguration som administreras av LiU-IT.
 

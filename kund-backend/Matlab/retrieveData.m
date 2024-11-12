@@ -2,10 +2,10 @@ function [d] = retrieveData(userID)
 
 % headerField = matlab.net.http.field.ContentTypeField('application/x-www-form-urlencoded');
 % url = 'http://79.136.70.172:7403/retrieveOp.php';
-url = 'http://optimalmeasurements.it.liu.se:8080/retrieveOp.php';
+url = 'http://om2.it.liu.se:8080/retrieveOp.php';
 
 un = 'jorbl45';
-pw = 'Q8rkS97.jEj';
+pw = 'Q8rkS97.jEj'; //Check password
 
 % input = struct('user',un,'password',pw, 'userID', 1);
 % inputParameters = struct('parameters', input);
