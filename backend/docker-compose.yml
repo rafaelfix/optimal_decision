@@ -6,9 +6,6 @@ services:
       context: ./
       dockerfile: Dockerfile
     command: gunicorn django_backend.wsgi:application --bind 0.0.0.0:8088 --log-level debug --capture-output --timeout 60
-    #command: python manage.py runserver 0.0.0.0:8000
-    #expose:
-    #  - 8088
     ports:
       - 8088:8088
     restart: always
@@ -16,16 +13,9 @@ services:
       - ./.env.web
     depends_on:
       - db
-    develop:
-    # See https://docs.docker.com/compose/file-watch/
-      watch:
-        - path: Dockerfile
-          action: rebuild
-        - path: requirements.txt
-          action: rebuild
-        - path: .
-          target: /home/app/web
-          action: sync+restart
+    volumes:
+      - .:/home/app/web
+
   db:
     image: postgres:13.0-alpine
     restart: always
@@ -33,13 +23,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.db
-  #nginx:
-  #  build: ./nginx
-  #  ports:
-  #    - 1337:80
-  #  depends_on:
-  #    - web
 
 volumes:
   postgres_data:
-
