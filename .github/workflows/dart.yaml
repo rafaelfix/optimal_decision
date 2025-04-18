@@ -12,29 +12,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          
       - run: flutter --version
       
       - name: Install dependencies
         working-directory: ./frontend
         run: dart pub get
 
-      - name: Format and commit if needed
+      - name: Format code (non-blocking)
         working-directory: ./frontend
         run: |
           dart format .
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add .
-          git diff --quiet && git diff --staged --quiet || git commit -m "style: auto-format via GitHub Actions"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "⚠️ Código foi formatado automaticamente, mas o build continuará normalmente."
 
-
-      # Currently ignore the issues in flutter-cpp-plugin
+      # Atualmente ignorando flutter-cpp-plugin
       - name: Analyze project source
         working-directory: ./frontend
         run: dart analyze --fatal-infos
