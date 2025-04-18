@@ -1,5 +1,9 @@
-# FINAL STAGE
-FROM python:3.10-alpine
+###########
+# BUILDER #
+###########
+
+FROM python:3.10-alpine AS builder
+
 
 RUN mkdir -p /home/app
 RUN addgroup -S app && adduser -S app -G app
