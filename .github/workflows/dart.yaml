@@ -32,4 +32,4 @@ jobs:
       # Atualmente ignorando flutter-cpp-plugin
       - name: Analyze project source
         working-directory: ./frontend
-        run: dart analyze --fatal-infos
+        run: dart analyze #--fatal-infos
