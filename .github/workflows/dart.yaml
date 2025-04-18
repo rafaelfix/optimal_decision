@@ -21,13 +21,18 @@ jobs:
         working-directory: ./frontend
         run: dart pub get
 
-      - name: Verify formatting
+      - name: Format and commit if needed
         working-directory: ./frontend
-        run: dart format --output=none --set-exit-if-changed . 
-        
-      - name: Formatting failure hint
-        if: failure()
-        run: echo "Run ''flutter format ./frontend'' while in the root directory of the project to solve the above issue."
+        run: |
+          dart format .
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "style: auto-format via GitHub Actions"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       # Currently ignore the issues in flutter-cpp-plugin
       - name: Analyze project source
